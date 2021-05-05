@@ -8,4 +8,4 @@
 
 #-----------------------------------
 
-Product.create(name: "Jetstar Tomato", price: 2, description: "One tomato plant, variety: Jetstar")
+# Product.create(name: "Jetstar Tomato", price: 2, description: "One tomato plant, variety: Jetstar")
