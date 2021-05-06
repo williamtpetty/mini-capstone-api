@@ -1,8 +1,15 @@
 class ProductsController < ApplicationController
 
-  def single_tomato_data
-    first_item = Product.first
-    render json: {tomato: first_item}
+  def all_tomato_data
+    render json: {tomatos_for_sale: Product.all}
+  end
+
+  def pull_first_tomato
+    render json: {tomatos_for_sale: Product.first}
+  end
+
+  def pull_last_tomato
+    render json: {tomatos_for_sale: Product.last}
   end
 
 end

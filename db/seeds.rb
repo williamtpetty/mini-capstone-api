@@ -8,4 +8,7 @@
 
 #-----------------------------------
 
-# Product.create(name: "Jetstar Tomato", price: 2, description: "One tomato plant, variety: Jetstar")
+# Product.create(name: "Better Boy", price: 2, description: "One tomato plant, variety: Better Boy")
+# Product.create(name: "Roma", price: 1, description: "One tomato plant, variety: Roma")
+# Product.create(name: "Heirloom", price: 2, description: "One tomato plant, variety: Heirloom")
+# Product.create(name: "Celebrity", price: 3, description: "One tomato plant, variety: Celebrity")
