@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
 
-  def index # renders all products
-    render json: Product.all
+  def index
+    render json: Product.all # uses serializer
   end
     
   def create # creates new product via the multipart body option in insomnia, terminal program in terminal_create.rb
@@ -12,12 +12,12 @@ class ProductsController < ApplicationController
       description: params[:description]
     )
     new_product.save
-    render json: new_product.as_json
+    render json: new_product # uses serializer
   end
 
-  def show #grabs one id based on url segment
-    single_tomato = Product.find_by(id: params[:id]) # find_by requires key and value
-    render json: single_tomato.as_json
+  def show 
+    single_tomato = Product.find_by(id: params[:id])
+    render json: single_tomato # uses serializer
   end
 
   def update
@@ -28,13 +28,12 @@ class ProductsController < ApplicationController
     single_tomato.description = params[:description] || single_tomato.description
     # each of these above will default to the currently held value of each parameter if nothing is passed as a new parameter
     single_tomato.save 
-    # must save if not using the .update method
-    render json: single_tomato.as_json
+    render json: single_tomato # uses serializer
   end
 
   def destroy
     single_tomato = Product.find(params[:id])
     single_tomato.destroy
-    render json: {message: "Product now out of stock"}
+    render json: {message: "Product now permanently out of stock"}
   end
 end
