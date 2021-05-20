@@ -67,7 +67,7 @@ class ProductsController < ApplicationController
 
   def destroy
     product = Product.find(params[:id])
-    product.destroy
+    product.delete  
     render json: {message: "Product is now discontinued at this location"}
   end
 end
