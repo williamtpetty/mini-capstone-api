@@ -38,13 +38,16 @@ class ProductsController < ApplicationController
       inventory: params[:inventory],
       supplier_id: params[:supplier_id]
     )
-    if product.save
-      if params[:url]
-       image = Image.create(
-         url: params[:url], product_id: product.id
+    if product.save # if product saves
+      if params[:url] # also if there are params set for :url
+        image = Image.create( #create a new image instance
+          url: params[:url], 
+          product_id: product.id # assigns current product :id
         )
+        render json: product 
+      else
+        render json: {errors: image.errors.full_messages}
       end
-      render json: product 
     else 
       render json: {errors: product.errors.full_messages}
     end
@@ -59,14 +62,24 @@ class ProductsController < ApplicationController
     product = Product.find(params[:id])
     product.name = params[:name] || product.name
     product.price = params[:price] || product.price
-    # product.image_url = params[:image_url] || product.image_url
     product.description = params[:description] || product.description
     product.inventory = params[:inventory] || product.inventory
+    prouct.supplier_id = params[:supplier_id] || product.supplier_id
+
     if product.save # happy path
       render json: product 
     else # sad path
       render json: {errors: product.errors.full_messages}
     end
+
+    if params[:url]
+      image = Image.update(
+        url: params[:url] || product.image,
+        product_id: product.id
+      )
+      render json: image
+    end
+
   end
 
   def destroy

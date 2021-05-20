@@ -1,8 +1,12 @@
 class SuppliersController < ApplicationController
 
   def index
-    suppliers = Supplier.all
-    render json: suppliers
+    if current_user
+      suppliers = Supplier.all
+      render json: {user: current_user, suppliers: suppliers}
+    else
+      authenticate_user
+    end
   end
 
   def create
@@ -19,8 +23,13 @@ class SuppliersController < ApplicationController
   end
 
   def show
-    supplier = Supplier.find(params[:id])
-    render json: supplier
+    if current_user
+      
+      supplier = Supplier.find(params[:id])
+      render json: supplier
+    else
+      authenticate_user
+    end
   end
   
   def update

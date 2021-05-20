@@ -37,6 +37,14 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+# Serializer gem - command: rails generate serializer modelname_serializer
 gem 'active_model_serializers', '~> 0.10.0'
 
+# Take all seeded data and replace it in your seeds.db file - command: rails db:seed:dump
 gem 'seed_dump'
+
+# Password encryption - https://github.com/karate-dot-chop/resources/blob/main/guide_rails_api_authentication.md
+gem 'bcrypt', '~> 3.1.7'
+
+# JSON Web Tokens gem - see above link for instructions
+gem 'jwt'
