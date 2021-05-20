@@ -3,15 +3,11 @@ Rails.application.routes.draw do
 
   get "/products" => "products#index"
   # displays all products
-
   post "/products" => "products#create"
   # route to create method
-
   get "/products/:id" => "products#show"
   # url segment parameter displays an individual tomato
-
   patch "/products/:id" => "products#update"
-  
   delete "/products/:id" => "products#destroy"
 
 end

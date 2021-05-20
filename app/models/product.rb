@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-
+  
   validates :name, :presence => true # ruby syntax
   validates :price, numericality: {greater_than: 0} # JS syntax
   validates :description, length: {in: 5..500}
@@ -18,4 +18,12 @@ class Product < ApplicationRecord
     price + tax
   end
 
+  belongs_to :supplier # This does what the method below does
+  # def supplier
+  #   Supplier.find_by(id: self.supplier_id)
+  # end
+
+  def supplier_name # Does this work?
+    supplier.name
+  end
 end

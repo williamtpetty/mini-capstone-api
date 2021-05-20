@@ -2,11 +2,13 @@ class ProductsController < ApplicationController
 
   def index
     product = Product.all
+
     # condition sorts by name when search param is passed
     if params[:search]
       product = Product.where("name iLike ?", "%#{params[:search]}%")
       product = product.order(:name)
     end
+
     # condition provides price and name sorting options
     if (params[:sort] == "price") && (params[:sort_order] == "desc")
       product = Product.order(price: :desc)
@@ -17,40 +19,43 @@ class ProductsController < ApplicationController
     elsif params[:sort] == "name"
       product = Product.order(:name)
     end
+
     # if user selects discounted, provides discounted product
     if params[:discount]
       product = Product.where("inventory < 5")
       product = product.order(:name)
     end
+
     # orders by :id if no parameters are passed
     render json: product.order(:id)
   end
     
-  def create # creates new product via the multipart body option in insomnia, terminal program in terminal_create.rb
+  def create # creates new product via multipart body option in insomnia
     product = Product.new(
       name: params[:name],
       price: params[:price],
-      image_url: params[:image_url],
+      # image_url: params[:image_url],
       description: params[:description],
-      inventory: params[:inventory]
+      inventory: params[:inventory],
+      supplier_id: params[:supplier_id]
     )
-    if product.save # happy path
+    if product.save
       render json: product 
-    else # sad path
+    else 
       render json: {errors: product.errors.full_messages}
     end
   end
 
   def show 
     product = Product.find_by(id: params[:id])
-    render json: product # uses serializer
+    render json: product
   end
 
   def update
-    product = Product.find(params[:id]) #finds the product
+    product = Product.find(params[:id])
     product.name = params[:name] || product.name
     product.price = params[:price] || product.price
-    product.image_url = params[:image_url] || product.image_url
+    # product.image_url = params[:image_url] || product.image_url
     product.description = params[:description] || product.description
     product.inventory = params[:inventory] || product.inventory
     if product.save # happy path
