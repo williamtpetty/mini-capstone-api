@@ -23,7 +23,10 @@ class Product < ApplicationRecord
   #   Supplier.find_by(id: self.supplier_id)
   # end
 
-  def supplier_name # Does this work?
+  def supplier_name 
     supplier.name
   end
+
+  has_many :images
+
 end
