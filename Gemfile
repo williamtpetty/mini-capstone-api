@@ -14,7 +14,11 @@ gem 'puma', '~> 5.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
+# Password encryption - https://github.com/karate-dot-chop/resources/blob/main/guide_rails_api_authentication.md
+
+# JSON Web Tokens gem - see above link for instructions
+gem 'jwt'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -43,8 +47,3 @@ gem 'active_model_serializers', '~> 0.10.0'
 # Take all seeded data and replace it in your seeds.db file - command: rails db:seed:dump
 gem 'seed_dump'
 
-# Password encryption - https://github.com/karate-dot-chop/resources/blob/main/guide_rails_api_authentication.md
-gem 'bcrypt', '~> 3.1.7'
-
-# JSON Web Tokens gem - see above link for instructions
-gem 'jwt'

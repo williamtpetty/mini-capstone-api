@@ -1,5 +1,7 @@
 class ProductsController < ApplicationController
 
+  before_action :authenticate_admin, except: [:index, :show]
+
   def index
     product = Product.all
 
@@ -20,17 +22,25 @@ class ProductsController < ApplicationController
       product = Product.order(:name)
     end
 
+    if params[:category]
+      category = Category.find_by("name iLike ?", "%#{params[:category]}%")
+      product = category.products
+      
+    end
+    
+
+
     # if user selects discounted, provides discounted product
     if params[:discount]
-      product = Product.where("inventory < 5")
+      product = Product.where("inventory < 3")
       product = product.order(:name)
     end
 
     # orders by :id if no parameters are passed
-    render json: product.order(:id)
+    render json: product
   end
     
-  def create # creates new product via multipart body option in insomnia
+  def create
     product = Product.new(
       name: params[:name],
       price: params[:price],
@@ -66,9 +76,9 @@ class ProductsController < ApplicationController
     product.inventory = params[:inventory] || product.inventory
     prouct.supplier_id = params[:supplier_id] || product.supplier_id
 
-    if product.save # happy path
+    if product.save
       render json: product 
-    else # sad path
+    else
       render json: {errors: product.errors.full_messages}
     end
 
