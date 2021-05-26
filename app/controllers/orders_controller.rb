@@ -9,6 +9,8 @@ class OrdersController < ApplicationController
   end
   
   def create
+    carted_product = CartedProduct.where(status: "carted").all
+
     order = Order.new(
       user_id: current_user.id,
       product_id: params[:product_id],
