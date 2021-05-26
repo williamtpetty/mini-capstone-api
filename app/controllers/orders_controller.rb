@@ -9,22 +9,27 @@ class OrdersController < ApplicationController
   end
   
   def create
-    carted_product = CartedProduct.where(status: "carted").all
+    carted_products = current_user.carted_products.where(status: "carted")
+    calculated_subtotal = 0
+    carted_products.each do |carted_product|
+      calculated_subtotal += carted_product.quantity * carted_product.product.price
+    end
+    calculated_tax = calculated_subtotal * 0.09
+    calculated_total = calculated_subtotal + calculated_tax
 
     order = Order.new(
       user_id: current_user.id,
-      product_id: params[:product_id],
-      quantity: params[:quantity]
+      subtotal: calculated_subtotal,
+      tax: calculated_tax,
+      total: calculated_total
     )
-
-    # Creating a subtotal: you can call '.quantity' because it's an attribute of Order
-    # Then, you can call .product because of 'belongs_to :product' in the Order model
-    # Then, you can assign it to a new parameter 'order.subtotal' to call it
-    order.subtotal = order.quantity * order.product.price
-    order.tax = order.subtotal * 0.09
-    order.total = order.tax + order.subtotal
-
     if order.save
+      # carted_products.update_all(status: "purchased", order_id: order.id)
+
+      carted_products.each do |carted_product|
+        carted_product.update(status: "purchased", order_id: order.id)
+        # carted_product.product.inventory = carted_product.product.inventory - carted_product.quantity
+      end
       render json: order
     else
       render json: {error: order.errors.full_messages}, status: :unprocessable_entity
@@ -32,10 +37,13 @@ class OrdersController < ApplicationController
   end
 
   def show
-    # The below two lines of code ensure (because of current_user.orders.find...) that
-    # Only the current user can find their own orders
     order = current_user.orders.find(params[:id])
     render json: order
-    # Work on comparing order id to current id - does that make sense?
   end
+
+  # def destroy
+  #   order = current_user.orders.find(params[:id])
+  #   order.delete
+  #   render json: {message: "all orders deleted"}
+  # end
 end

@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
   before_action :authenticate_admin, except: [:index, :show]
 
   def index
-    product = Product.all
+    product = Product.order(:id).all
 
     # condition sorts by name when search param is passed
     if params[:search]
@@ -25,11 +25,8 @@ class ProductsController < ApplicationController
     if params[:category]
       category = Category.find_by("name iLike ?", "%#{params[:category]}%")
       product = category.products
-      
     end
     
-
-
     # if user selects discounted, provides discounted product
     if params[:discount]
       product = Product.where("inventory < 3")

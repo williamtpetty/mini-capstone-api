@@ -1,5 +1,6 @@
 class OrderSerializer < ActiveModel::Serializer
-  attributes :user_id, :subtotal, :tax, :total
-  # may need to add  :product, back into attributes to get front end to work
+  attributes :id, :user_id, :subtotal, :tax, :total
+  
+  has_many :carted_products
 end
 

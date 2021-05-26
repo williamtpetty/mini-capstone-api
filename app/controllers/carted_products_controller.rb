@@ -14,7 +14,7 @@ class CartedProductsController < ApplicationController
     # end
     # render json: product_carted_array
 
-    carted_product = CartedProduct.where(status: "carted").all
+    carted_product = current_user.carted_products.where(status: "carted")
     render json: carted_product
 
   end  
@@ -25,7 +25,6 @@ class CartedProductsController < ApplicationController
       user_id: current_user.id,
       product_id: params[:product_id],
       quantity: params[:quantity],
-      status: "carted",
       order_id: nil
     )
     carted_product.save
@@ -46,10 +45,8 @@ class CartedProductsController < ApplicationController
   end
 
   def destroy
-    carted_product = CartedProduct.find(params[:id])
-    carted_product.update(
-      status: "removed"
-    )
+    carted_product = current_user.carted_products.where(status: carted).find(params[:id])
+    carted_product.update(status: "removed")
     carted_product.save
     render json: {message: "This product has been removed from your cart"}
   end

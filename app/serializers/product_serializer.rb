@@ -7,5 +7,4 @@ class ProductSerializer < ActiveModel::Serializer
   has_many :images # will list array of image hashes in json output
   has_many :categories # will list array of category hashes in json output
 
-
 end
